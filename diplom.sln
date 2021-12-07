@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31910.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9AE66E24-D2D9-4FF2-AB7F-CE79F20F2B8B}") = "diplom", "diplom\diplom.ftn95p", "{631001B8-A71A-435C-8F1C-A3D077CA7F45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CheckMate|.NET = CheckMate|.NET
+		CheckMate|x64 = CheckMate|x64
+		CheckMate|x86 = CheckMate|x86
+		Debug|.NET = Debug|.NET
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|.NET = Release|.NET
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.CheckMate|.NET.ActiveCfg = CheckMate|.NET
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.CheckMate|.NET.Build.0 = CheckMate|.NET
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.CheckMate|x64.ActiveCfg = CheckMate|x64
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.CheckMate|x64.Build.0 = CheckMate|x64
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.CheckMate|x86.ActiveCfg = CheckMate|Win32
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.CheckMate|x86.Build.0 = CheckMate|Win32
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Debug|.NET.ActiveCfg = Debug|.NET
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Debug|.NET.Build.0 = Debug|.NET
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Debug|x64.ActiveCfg = Debug|x64
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Debug|x64.Build.0 = Debug|x64
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Debug|x86.ActiveCfg = Debug|Win32
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Debug|x86.Build.0 = Debug|Win32
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Release|.NET.ActiveCfg = Release|.NET
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Release|.NET.Build.0 = Release|.NET
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Release|x64.ActiveCfg = Release|x64
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Release|x64.Build.0 = Release|x64
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Release|x86.ActiveCfg = Release|Win32
+		{631001B8-A71A-435C-8F1C-A3D077CA7F45}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DA01D18-582C-46F7-95EA-6EBA366C359A}
+	EndGlobalSection
+EndGlobal
