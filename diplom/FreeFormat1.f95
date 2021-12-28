@@ -12,9 +12,10 @@ double precision function w_An(x,y,R) !function w(x,y,t)
 end function w_An
 
  double precision function f(x, y, x1, y1) !denominator of integral 
-    double precision :: x, y, x1, y1
-    f =1/sqrt((x-x1)**2+(y-y1)**2)**3
-   
+    double precision :: x, y, x1, y1,radius, temp
+    radius= (x-x1)**2+(y-y1)**2
+    temp=(1/radius)**3
+    f=sqrt(temp)
     end function f
 
  double precision function  Gaus4points(x1,y1,x2,y2,h) !4 point Gauss method for denominator
@@ -29,24 +30,26 @@ end function w_An
     eta2=h*root/2 + y1
     temp = f( xi1, eta1,x2,y2)+f(xi1, eta2,x2,y2)+f( xi2, eta1,x2,y2)+f(xi2, eta2,x2,y2)
     Gaus4points = temp *h*h/4
+
  end function Gaus4points
 
  double precision function Get_p(k,l, R, h, n, X, Y,  W)! Evaluating of main integral as sum
-    double precision :: R, h, radius       
+    double precision :: R, h, radius, temp, singular, regular   
     integer :: n, i, j, k, l                   
     double precision, allocatable :: X(:), Y(:),  W(:,:) 
-    double precision :: temp, sing, reg
     temp = 0
-    sing=0
+    singular=0
+    regular=0
     do i = 1, n
         do j = 1, n
             if ( i == k .and. j==l) then
-                sing =-8*sqrt(2.0)*W(i,j)/h
-             
-                temp=temp+sing
+                singular =-8*sqrt(2.0)*W(i,j)/h !singular part of the integral
+                
+                temp=temp+singular
+               
             else
-                reg= Gaus4points(X(i),Y(i),X(k),Y(l),h)* W(i,j)
-                temp=temp + reg
+                regular= Gaus4points(X(i),Y(j),X(k),Y(l),h)* W(i,j)! regular part of the integral
+                temp=temp + regular
             end if 
        end do
     end do
@@ -58,11 +61,12 @@ subroutine Pressure(R, h, n, X, Y, P, W)! geting pressure and outputing in file
     double precision :: R, h, radius       
     integer :: n, i, j, k, l                   
     double precision, allocatable :: X(:), Y(:), P(:,:),  W(:,:) 
-   
-    do k = 1, n
+      do k = 1, n
         do l = 1, n
-            P(k,l)=Get_p(k,l, R, h, n, X, Y, W)        
+            P(k,l)=Get_p(k,l, R, h, n, X, Y, W)     
+            
         enddo
+
     enddo
 end subroutine Pressure
 
@@ -70,13 +74,13 @@ Subroutine MaxErr()
    
 end subroutine MaxErr
 
-subroutine FileOutput(P, n,h)
+subroutine FileOutput(X,Y,P, n,h)
     double precision:: h
-    double precision, allocatable :: P(:,:)
+    double precision, allocatable :: P(:,:),X(:),Y(:)
     integer ::  k, l, n
         do k = 1, n
             do l = 1, n
-                write (1,*) P(k,l)       
+                write (1,*) X(k)," ",Y(l)," ",P(k,l)       
             enddo
             write (1,*) "*"
 
@@ -112,12 +116,11 @@ end subroutine FileOutput
      
             if (radius <=R) then
                 P_EX(i,j)=1
-                W(i,j)=w_An(X(i),Y(j),R)
-                
+                !W(i,j)=w_An(X(i),Y(j),R)
+                W(i,j)=1
             else 
                 P_EX(i,j)=0
                 W(i,j) = 0
-               
             endif
             
         enddo
@@ -125,7 +128,7 @@ end subroutine FileOutput
    !call MeshCreate     
     call Pressure(R, h, n, X, Y, P, W)
    
-    call FileOutput(P,n,h)
+    call FileOutput(X,Y,P,n,h)
     !call MaxErr(P,P_EX)
     temp=maxval(abs(P_EX-P))
     write(1,*) "MaxErr= ", temp
