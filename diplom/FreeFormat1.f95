@@ -116,8 +116,8 @@ end subroutine FileOutput
      
             if (radius <=R) then
                 P_EX(i,j)=1
-                !W(i,j)=w_An(X(i),Y(j),R)
-                W(i,j)=1
+               W(i,j)=w_An(X(i),Y(j),R)
+                
             else 
                 P_EX(i,j)=0
                 W(i,j) = 0
@@ -137,4 +137,5 @@ end subroutine FileOutput
     deallocate(W)
     deallocate(P)
     deallocate(P_EX)
+    !TEST
 end program main
