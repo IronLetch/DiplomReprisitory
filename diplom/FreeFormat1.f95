@@ -1,9 +1,68 @@
 module ElasticFunctionsByIgor
+
 implicit none  
+type TEikonalMesh
+   
+   double precision, allocatable:: X(:) , Y(:)
+    integer:: n
+    double precision:: h,R
+end type
 contains 
-subroutine MeshCreate()! creating X(i) Y(i) and W(i,j) for every i,j
- 
-end subroutine MeshCreate
+subroutine prepareElast(mesh, w,n,R)! creating X(i) Y(i) and W(i,j) for every i,j
+    type(TEikonalMesh) :: mesh   
+    double precision, allocatable :: W(:,:)
+    double precision radius, R
+    integer :: i, j,n
+    mesh%h=2*R/n
+    do i = 1, n
+        mesh%X(i)=-R+mesh%h/2+(i-1)*mesh%h
+        mesh%Y(i)=-R+mesh%h/2+(i-1)*mesh%h
+    enddo
+
+    do i = 1, n
+        do j= 1, n
+        radius = sqrt(mesh%X(i)**2+mesh%Y(j)**2)
+     
+            if (radius <=R) then
+               
+               W(i,j)=w_An(mesh%X(i),mesh%Y(j),R)
+                
+            else 
+              
+                W(i,j) = 0
+            endif
+            
+        enddo
+     enddo
+end subroutine prepareElast
+
+subroutine meshcreate(X, Y, W, P_EX, R, h, n)
+ double precision :: R, h, radius    
+    integer :: n, i, j                 
+    double precision, allocatable :: X(:), Y(:),  W(:,:) ,P_EX(:,:)
+do i = 1, n
+        X(i)=-R+h/2+(i-1)*h
+        Y(i)=-R+h/2+(i-1)*h
+    enddo
+
+    do i = 1, n
+        do j= 1, n
+        radius = sqrt((X(i)*X(i)+Y(j)*Y(j)))
+     
+            if (radius <=R) then
+                P_EX(i,j)=1
+               W(i,j)=w_An(X(i),Y(j),R)
+                
+            else 
+                P_EX(i,j)=0
+                W(i,j) = 0
+            endif
+            
+        enddo
+     enddo
+
+end subroutine meshcreate
+
 double precision function w_An(x,y,R) !function w(x,y,t)
     double precision :: x, y, R, radius2, temp 
     radius2 = (x*x+y*y)
@@ -96,6 +155,7 @@ end subroutine FileOutput
     double precision :: R, h, radius,temp       
     integer :: n, i, j                 
     double precision, allocatable :: X(:), Y(:), P(:,:),  W(:,:) ,P_EX(:,:)
+    type(TEikonalMesh) :: mesh  
     Read(*,*) R,n
     open(1, file ="out.txt")
     h=2*R/n
@@ -105,27 +165,8 @@ end subroutine FileOutput
     allocate (P(n,n))
     allocate (P_EX(n,n))
 
-    do i = 1, n
-        X(i)=-R+h/2+(i-1)*h
-        Y(i)=-R+h/2+(i-1)*h
-    enddo
-
-    do i = 1, n
-        do j= 1, n
-        radius = sqrt((X(i)*X(i)+Y(j)*Y(j)))
-     
-            if (radius <=R) then
-                P_EX(i,j)=1
-               W(i,j)=w_An(X(i),Y(j),R)
-                
-            else 
-                P_EX(i,j)=0
-                W(i,j) = 0
-            endif
-            
-        enddo
-     enddo
-   !call MeshCreate     
+    call meshcreate(X, Y, W, P_EX, R, h, n)
+    !call PrepareElast(mesh, w,n,R)     
     call Pressure(R, h, n, X, Y, P, W)
    
     call FileOutput(X,Y,P,n,h)
